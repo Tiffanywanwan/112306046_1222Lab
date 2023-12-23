@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dice Roller</title>
+</head>
+<body>
+    <form action="#">
+        <input id="rollButton" type="button" value="Roll Dice">
+    </form>
+
+    <img id="die1" src="die1.png" alt="blank image">
+    <img id="die2" src="die1.png" alt="blank image">
+    <img id="die3" src="die1.png" alt="blank image">
+    <img id="die4" src="die1.png" alt="blank image">
+    <img id="die5" src="die1.png" alt="blank image">
+    <img id="die6" src="die1.png" alt="blank image">
+    <img id="die7" src="die1.png" alt="blank image">
+    <img id="die8" src="die1.png" alt="blank image">
+    <img id="die9" src="die1.png" alt="blank image">
+    <img id="die10" src="die1.png" alt="blank image">
+    <img id="die11" src="die1.png" alt="blank image">
+    <img id="die12" src="die1.png" alt="blank image">
+
+    <div id="result"></div>
+
+    <script>
+        window.addEventListener("load", start);
+
+        var dieImages = [];
+
+        function start() {
+            var button = document.getElementById("rollButton");
+            button.addEventListener("click", rollDice);
+
+            for (var i = 1; i <= 12; i++) {
+                dieImages.push(document.getElementById("die" + i));
+            }
+        }
+
+        function rollDice() {
+            var diceResults = [];
+
+            for (var i = 0; i < 12; i++) {
+                var dieValue = Math.floor(1 + Math.random() * 6);
+                diceResults.push(dieValue);
+                setImage(dieImages[i], dieValue);
+            }
+
+            displayProbabilities(diceResults);
+        }
+
+        function setImage(dieImg, dieValue) {
+            dieImg.setAttribute("src", "die" + dieValue + ".png");
+            dieImg.setAttribute("alt", "die image with " + dieValue + " spot(s)");
+        }
+
+        function displayProbabilities(diceResults) {
+            var faceCounts = Array.from({ length: 6 }, () => 0);
+
+            for (var i = 0; i < diceResults.length; i++) {
+                faceCounts[diceResults[i] - 1]++;
+            }
+
+            var probabilityDiv = document.getElementById("result");
+            probabilityDiv.innerHTML = "<p>Probability of each face:</p>";
+
+            for (var i = 0; i < faceCounts.length; i++) {
+                var probability = ((faceCounts[i] / 12) * 100).toFixed(2);
+                probabilityDiv.innerHTML += "<p>Face " + (i + 1) + ": " + probability + "%</p>";
+            }
+        }
+    </script>
+</body>
+</html>
